@@ -75,7 +75,7 @@ def func_double(combination, numbers, goal): #mult, mult, add 5,2,7,2
     if z == goal:       
         return '{} {} {} = {}. {} {} {} = {}. {} {} {} = {}'.format(v, combination[0], numbers[1], w,
                                                                     x, combination[1], numbers[3], y,
-                                                                    y, combination[2], w, z)
+                                                                    w, combination[2], y, z)
     return ''
     
 
