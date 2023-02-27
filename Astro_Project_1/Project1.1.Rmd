@@ -1,0 +1,380 @@
+---
+title: "Ferris's Project"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=T,eval=T,message=F,warning=F,fig.align='center')
+setwd("~/Documents/astron_103")
+library(tidyverse)
+library(readr)
+library(readxl)
+```
+
+```{r, echo = F}
+six_stars = read_xlsx("observations.xlsx", sheet = 1, skip = 3)
+AA_Gemini = six_stars[1:3] %>% drop_na() %>% 
+  rename(Abs_Mag = "Abs. Mag...3", Day = "Day...1")
+AO_Auriga = six_stars[4:6] %>% drop_na() %>% 
+  rename(Abs_Mag = "Abs. Mag...6", Day = "Day...4")
+BF_Ophiuchus = six_stars[7:9] %>% drop_na() %>% 
+  rename(Abs_Mag = "Abs. Mag...9", Day = "Day...7")
+Delta_Cepheus = six_stars[10:12] %>% drop_na() %>% 
+  rename(Abs_Mag = "Abs. Mag...12", Day = "Day...10")
+GQ_Orion = six_stars[13:15] %>% drop_na() %>% 
+  rename(Abs_Mag = "Abs. Mag...15", Day = "Day...13")
+VX_Perseus = six_stars[16:18] %>% drop_na() %>% 
+  rename(Abs_Mag = "Abs. Mag...18", Day = "Day...16")
+```
+
+
+```{r, echo = F}
+make_star = function(name, name2) {
+  ggplot(name) + 
+    aes(x = Day, y = Abs_Mag) +
+    geom_point() +
+    xlab("Time in Days") +
+    ylab("Abs. Magnitude") +
+    ggtitle(sprintf("Absolute Magnitude of %s over Time", name2)) + scale_y_reverse()
+}
+```
+
+# #1: Creating a light curve of a Milky Way Cepheid variable
+
+## AA Gemini
+
+> Parallax = 0.1878 milliarcseconds   
+> Distance (in parsecs) = 5324.814	
+
+```{r, echo = F}
+make_star(AA_Gemini, "AA Gemini")
+AAmin = max(AA_Gemini$Abs_Mag)
+AAmax = min(AA_Gemini$Abs_Mag)
+min = (AA_Gemini %>% filter(Day < 11) %>% arrange(desc(Abs_Mag)))[1,]$Day
+max = (AA_Gemini %>% filter(Day > 11) %>% arrange(desc(Abs_Mag)))[1,]$Day
+AAperiod = max-min
+```
+
+>The smallest Absolute Magnitude (Highest Luminosity) is `r AAmax`.  
+>The period between light curves is `r AAperiod` days.
+
+## AO Auriga
+
+>Parallax = 0.1268 milliarcseconds		
+>Distance (in parsecs) = 7886.435		
+
+```{r, echo = F}
+make_star(AO_Auriga, "AO Auriga")
+AOmin = max(AO_Auriga$Abs_Mag)
+AOmax = min(AO_Auriga$Abs_Mag)
+min = (AO_Auriga %>% filter(Day < 7) %>% arrange(desc(Abs_Mag)))[1,]$Day
+max = (AO_Auriga %>% filter(Day > 7) %>% arrange(desc(Abs_Mag)))[1,]$Day
+AOperiod = max-min
+```
+
+>The smallest Absolute Magnitude (Highest Luminosity) is `r AOmax`.  
+>The period between light curves is `r AOperiod` days.
+
+## BF Ophiuchus
+
+>Parallax = 1.1764 milliarcseconds		
+>Distance (in parsecs) = 850.051		
+
+```{r, echo = F}
+make_star(BF_Ophiuchus, "BF Ophiuchus")
+BFmin = max(BF_Ophiuchus$Abs_Mag)
+BFmax = min(BF_Ophiuchus$Abs_Mag)
+min = (BF_Ophiuchus %>% filter(Day < 4) %>% arrange(desc(Abs_Mag)))[1,]$Day
+max = (BF_Ophiuchus %>% filter(Day > 4) %>% arrange(desc(Abs_Mag)))[1,]$Day
+BFperiod = max-min
+```
+
+>The smallest Absolute Magnitude (Highest Luminosity) is `r BFmax`.  
+>The period between light curves is `r BFperiod` days.
+
+## Delta Cepheus
+
+>Parallax = 3.77 millisarcseconds		 
+>Distance (in parsecs) = 265.252		
+
+```{r, echo = F}
+make_star(Delta_Cepheus, "Delta Cepheus")
+DCmin = max(Delta_Cepheus$Abs_Mag)
+DCmax = min(Delta_Cepheus$Abs_Mag)
+min = (Delta_Cepheus %>% filter(Day < 5) %>% arrange(desc(Abs_Mag)))[1,]$Day
+max = (Delta_Cepheus %>% filter(Day > 5) %>% arrange(desc(Abs_Mag)))[1,]$Day
+DCperiod = max-min
+```
+
+>The smallest Absolute Magnitude (Highest Luminosity) is `r DCmax`.  
+>The period between light curves is `r DCperiod` days.
+
+## GQ Orion
+
+>Parallax = 0.3873 milliarcseconds		  
+>Distance (in parsecs) = 2581.978		  
+
+```{r, echo = F}
+make_star(GQ_Orion, "GQ Orion")
+GQmin = max(GQ_Orion$Abs_Mag)
+GQmax = min(GQ_Orion$Abs_Mag)
+min = (GQ_Orion %>% filter(Day < 8) %>% arrange(desc(Abs_Mag)))[1,]$Day
+max = (GQ_Orion %>% filter(Day > 8) %>% arrange(desc(Abs_Mag)))[1,]$Day
+GQperiod = max-min
+```
+
+>The smallest Absolute Magnitude (Highest Luminosity) is `r GQmax`.  
+>The period between light curves is `r GQperiod` days.
+
+## VX Perseus
+
+>Parallax = 0.3298 milliarcseconds		  
+>Distance (in parsecs) = 3032.141		
+
+```{r, echo = F}
+make_star(VX_Perseus, "VX Perseus")
+VXmin = max(VX_Perseus$Abs_Mag)
+VXmax = min(VX_Perseus$Abs_Mag)
+min = (VX_Perseus %>% filter(Day < 8) %>% arrange(desc(Abs_Mag)))[1,]$Day
+max = (VX_Perseus %>% filter(Day > 8) %>% arrange(desc(Abs_Mag)))[1,]$Day
+VXperiod = max-min
+```
+
+>The smallest Absolute Magnitude (Highest Luminosity) is `r VXmax`.  
+>The period between light curves is `r VXperiod` days.
+
+
+# #2: Creating a period-luminosity relation for Milky Way Cepheids
+
+```{r, echo = F}
+star_name = c("AA Gemini", "AO Auriga", "BF Ophiuchus",
+               "Delta Cephus", "GQ Orion", "VX Perseus")
+star_period = c(AAperiod, AOperiod, BFperiod, 
+                 DCperiod, GQperiod, VXperiod)
+star_mag_max = c(AAmax, AOmax, BFmax,
+             DCmax, GQmax, VXmax)
+star_mag_min = c(AAmin, AOmin, BFmin,
+                 DCmin, GQmin, VXmin)
+#HARDCODED
+star_parallax = c(0.1878, 0.1268, 1.1764,
+                 3.77, 0.3873, 0.3298)
+#HARDCODED
+star_parsec = c(5324.814, 7886.435, 850.051, 
+                265.252, 2581.978, 3032.141)
+star_table = tibble(name = star_name, 
+                    peak_abs_mag = star_mag_max, 
+                    low_abs_mag = star_mag_min, 
+                    parallax = star_parallax, 
+                    parsec = star_parsec, 
+                    period = star_period)
+
+star_table = star_table %>% mutate(log_period = log10(period))
+
+star_table
+```
+
+
+```{r, echo = F}
+ggplot(star_table) + aes(log_period, peak_abs_mag) + geom_point() +
+  geom_smooth(se = F, method = 'lm') +
+  scale_y_reverse() +
+  annotate("text", x=.85, y=-3.25, label= "y = -1.8963846x -1.928326") #HARDCODED
+```
+
+```{r, echo = F}
+model = lm(peak_abs_mag ~ log_period, star_table)
+intercept = coef(model)[1]
+slope = coef(model)[2]
+coef(model)
+```
+
+>Peak Absolute Mag = `r slope`(Log of Period) `r intercept`  
+>Y = `r slope`x `r intercept`
+
+
+# #3: Creating a light curve of a Cepheid in NGC 300
+
+```{r, echo = F}
+NGC_Cephids = read_xlsx("observations.xlsx", sheet = 3, skip = 1)
+V2 = NGC_Cephids[1:2] %>% drop_na() %>% 
+  rename(Day = 'Day...1', App_mag = "Apparent Mag...2") %>% arrange(Day)
+V3 = NGC_Cephids[3:4] %>% drop_na() %>% 
+  rename(Day = 'Day...3', App_mag = "Apparent Mag...4") %>% arrange(Day)
+V9 = NGC_Cephids[5:6] %>% drop_na() %>% 
+  rename(Day = 'Day...5', App_mag = "Apparent Mag...6") %>% arrange(Day)
+V10 = NGC_Cephids[7:8] %>% drop_na() %>% 
+  rename(Day = 'Day...7', App_mag = "Apparent Mag...8") %>% arrange(Day)
+V29 = NGC_Cephids[9:10] %>% drop_na() %>% 
+  rename(Day = 'Day...9', App_mag = "Apparent Mag...10") %>% arrange(Day)
+```
+
+```{r, echo = F}
+make_star2 = function(name, name2) {
+  ggplot(name) + 
+    aes(x = Day, y = App_mag) +
+    geom_point() +
+    xlab("Time in Days") +
+    ylab("Apparant Magnitude") +
+    ggtitle(sprintf("Apparant Magnitude of %s over Time", name2)) + scale_y_reverse()
+}
+```
+
+
+
+## V2
+
+```{r, echo = F}
+make_star2(V2, "V2")
+V2min = max(V2$App_mag)
+V2max = min(V2$App_mag)
+min = (V2 %>% filter(Day < 25) %>% arrange(desc(App_mag)))[1,]$Day
+max = (V2 %>% filter(Day > 25) %>% arrange(desc(App_mag)))[1,]$Day
+V2_period = max-min
+```
+
+>The max Apparant Magnitude (Highest Luminosity) is `r V2max`.   
+>The period between light curves is `r V2_period` days.
+
+## V3
+
+```{r, echo = F}
+make_star2(V3, "V3")
+V3min = max(V3$App_mag)
+V3max = min(V3$App_mag)
+min = (V3 %>% filter(Day < 70) %>% arrange(desc(App_mag)))[1,]$Day
+max = (V3 %>% filter(Day > 70) %>% arrange(desc(App_mag)))[1,]$Day
+V3_period = max-min
+```
+
+>The max Apparant Magnitude (Highest Luminosity) is `r V3max`.   
+>The period between light curves is `r V3_period` days.
+
+## V9
+
+```{r, echo = F}
+make_star2(V9, "V9")
+V9min = max(V9$App_mag)
+V9max = min(V9$App_mag)
+min = (V9 %>% filter(Day < 10) %>% arrange(desc(App_mag)))[1,]$Day
+max = (V9 %>% filter(Day > 10) %>% arrange(desc(App_mag)))[1,]$Day
+V9_period = max-min
+```
+
+>The max Apparant Magnitude (Highest Luminosity) is `r V9max`.   
+>The period between light curves is `r V9_period` days.
+
+## V10
+
+```{r, echo = F}
+make_star2(V10, "V10")
+V10min = max(V10$App_mag)
+V10max = min(V10$App_mag)
+min = (V10 %>% filter(Day < 20) %>% arrange(desc(App_mag)))[1,]$Day
+max = (V10 %>% filter(Day > 20) %>% arrange(desc(App_mag)))[1,]$Day
+V10_period = max-min
+```
+
+>The max Apparant Magnitude (Highest Luminosity) is `r V10max`.   
+>The period between light curves is `r V10_period` days.
+
+
+## V29
+
+```{r, echo = F}
+make_star2(V29, "V29")
+V29min = max(V29$App_mag)
+V29max = min(V29$App_mag)
+min = (V29 %>% filter(Day < 20) %>% arrange(desc(App_mag)))[1,]$Day
+max = (V29 %>% filter(Day > 20) %>% arrange(desc(App_mag)))[1,]$Day
+V29_period = max-min
+```
+
+>The max Apparant Magnitude (Highest Luminosity) is `r V29max`.   
+>The period between light curves is `r V29_period` days.
+
+
+
+```{r, echo = F}
+names = c("V2", "V3", "V9", "V10", "V29")
+ngc_max = c(V2max, V3max, V9max, V10max, V29max)
+ngc_min = c(V2min, V3min, V9min, V10min, V29min)
+ngc_period = c(V2_period, V3_period, V9_period, V10_period, V29_period)
+NGC_stats = tibble(name = names, max_magnitude = ngc_max, 
+                   min_magnitude = ngc_min, period = ngc_period)
+NGC_stats = NGC_stats %>% mutate(log_period = log10(period))
+NGC_stats
+```
+
+## Estimating Distance:
+
+>We remember our equation derived from an earlier model to calculate the Peak Absolute Magnitude:  
+>Peak Absolute Mag = `r slope`(Log of Period) `r intercept`  
+Using this, we can create a function to calulate this for us.
+
+```{r}
+calc_mag = function(log_period) {
+  return (slope * log_period + intercept)
+}
+```
+
+>Putting each cepheid's log of its period into the above equation, we can derive the Estimated Absolute Magnitude.  
+
+
+```{r, echo = F}
+NGC_stats = NGC_stats %>% mutate(estimated_abs_magnitude = calc_mag(log_period)) 
+
+NGC_stats %>% select(name, log_period, estimated_abs_magnitude)
+```
+
+>Finally, we create our last function, which takes in the peak apparent magnitude 'm', and our estimated absolute magnitude 'M', and it returns us the distance to the cepheid in terms of parsecs. 
+
+
+```{r}
+distance = function(m, M) {
+  return (10 ^ ( (m-M+5) / 5)  )
+}
+```
+
+>Plugging each star into our function, we get our final answer of the estimated distance to each cepheid.  
+
+
+```{r, echo = F}
+NGC_stats = NGC_stats %>% 
+  mutate(distance_in_parsecs = distance(max_magnitude, estimated_abs_magnitude))
+NGC_stats %>% select(name, max_magnitude, estimated_abs_magnitude, distance_in_parsecs)
+```
+
+# #4: Discussion Questions
+
+>1. If you were an astronomer in the early 20th century, before there was conclusive evidence of other galaxies, would your distance measurement suggest that NGC 300 is its own galaxy or part of the Milky Way?  
+
+##### With evidence that these 5 cephids are clustered together, but extremely far from the Milky Way, I would have to conclude that NGC 300 is too far to be considered a part of the Milky Way Galaxy. I would have to say that NGC 300 is its own galaxy, or something else.   
+
+
+>2. In 2006, a group of astronomers used a technique based on a different kind of standard candle to estimate the distance to NGC 300, and found it to be ~1.86 million parsecs. How does this compare to your measurement? Why do you think it’s important to have multiple independent measurements of distance (or, really, any quantity) in astronomy?
+
+##### In terms of orders of magnitude, the 2006 measurement is in the same oder as my experiment (1.86 million vs ~1.2 million). Both experiments used the same reasoning (standard candles) but got slightly different results. It's important to have multiple independent measurements of everything in astronomy because it's possible that using the same style of experiment can produce different results. With a small sample size, it's difficult to say who is more accurate. 
+
+
+>3. How do the periods of the Cepheids in NGC 300 you found compare to the periods of Cepheids in the Milky Way? If they’re different (on average), what does that say about the Cepheids we see in NGC 300?
+
+##### The periods of the Cepheids in NGC 300 are much longer than the periods of the Cepheids in the Milky Way. This could suggest that the NGC 300 Cepheids have a larger mass than the ones in the Milky Way. 
+
+
+## Limits of the experiment
+
+
+##### Unfortunately, this cannot guarantee my model to be accurate as it only accounts for Cepheids with periods ranging from around 4-11 days. The periods in the NGC 300 Cepheids range from around 18-57 days. 
+
+
+
+
+
+
+
+
+
+
+
+
+
